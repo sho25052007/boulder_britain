@@ -12,7 +12,6 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const flash = require('connect-flash');
-const body_parser = require('body-parser');
 
 
 mongoose.connect('mongodb://localhost:27017/boulderBritain', {

@@ -44,11 +44,9 @@ router.get('/new', (req, res) => {
 
 //CREATE LOCATION
 router.post('/', validateLocation, wrapAsync(async(req, res, next) => {
-    console.log(req.body)
+    delete req.body['boulders'];
     const newPlaceName = new Location(req.body);
-    console.log(newPlaceName);
     await newPlaceName.save();
-    console.log('this is new place!', newPlaceName[0].place)
     // req.flash('success', 'Successfully made new location!');
     res.redirect(`/boulders/${newPlaceName.place}`)
 }));
@@ -63,8 +61,8 @@ router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
 //PUT LOCATION EDIT
 router.put('/:placeName', validateLocation, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
-    console.log(req.params);
     const newPlace = req.body.place;
+    delete req.body['boulders'];
     console.log(req.body)
     const placeData = await Location.findOneAndUpdate( {place: placeName}, { $set: req.body }, { runValidator: true, new: true });
     console.log(placeData)

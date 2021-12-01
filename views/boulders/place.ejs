@@ -1,5 +1,6 @@
 <% layout('layouts/boilerplate') %>
     <h1>All Boulders in <%= placeName %>, <%= placeData[0].area %> </h1>
+    <% console.log(placeData[0].boulders.length) %>
     <% if(placeData[0].boulders.length == 0) { %>
         <p>No boulders listed, please submit new route.</p>
     <% } else if(placeData[0].boulders) { %>
