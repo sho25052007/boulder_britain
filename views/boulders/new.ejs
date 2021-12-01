@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="d-flex justify-content-between mb-3">
+            <h1 class="d-inline">Create New Route</h1>
+            <a href="/boulders/<%= placeName %>" class="btn btn-outline-info my-auto">Return</a>
+        </div>
+        <form action="/boulders/<%= placeName %>" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="name">Name of the Route:</label>
+                <input class="form-control" type="text" name="0[name]" id="name" placeholder="Route Name" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="grade">Select a Grade:</label>
+                <select class="form-select" name="0[grade]" id="grade">
+                    <% for (let gradeNum of gradesNum) { %>
+                        <option value="<%= gradeNum %>"><%= gradeNum %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image of Route:</label>
+                <input type="text" class="form-control" name="0[image]" id="image" placeholder="Image URL" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description of Route:</label>
+                <textarea type="text" class="form-control" name="0[description]" id="description" placeholder="Description Text"></textarea required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <button class="btn btn-primary w-100 mt-3 mb-5">Submit</button>
+        </form>
+    </div>
+</div>

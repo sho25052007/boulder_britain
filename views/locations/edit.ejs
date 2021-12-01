@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate') %>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="d-flex justify-content-between mb-3">
+                <h1 class="d-inline">Edit <%= placeName %></h1>
+                <a href="/locations" class="btn btn-outline-info my-auto">Return</a>
+            </div>
+            <form action="/locations/<%= placeName %>?_method=PUT" method="POST" class="validated-form" novalidate>
+                <div class="mb-3">
+                    <label class="form-label" for="area">Change Area of the Place:</label>
+                    <input class="form-control" type="text" name="area" id="area" placeholder="Place Area" value="<%= placeData[0].area %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="place">Change Name of the Place:</label>
+                    <input class="form-control" type="text" name="place" id="place" placeholder="Place Name" value="<%= placeData[0].place %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="latitude">Change Latitude:</label>
+                    <input class="form-control" type="number" step="any" name="latitude" id="latitude" placeholder="Latitude" value="<%= placeData[0].latitude %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="longitude">Change Longitude:</label>
+                    <input class="form-control" type="number" step="any" name="longitude" id="longitude" placeholder="Longitude" value="<%= placeData[0].longitude %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Change Image of Route:</label>
+                    <input type="text" class="form-control" name="image" id="image" placeholder="Image URL" value="<%= placeData[0].image %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <input type="text" name="boulders" id="boulders" style="display: none;" value="<%= placeData[0].boulders %>">
+                <button class="btn btn-primary w-100 mt-3 mb-5">Submit</button>
+            </form>
+        </div>
+    </div>

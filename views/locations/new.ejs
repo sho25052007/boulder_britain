@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="d-flex justify-content-between mb-3">
+            <h1 class="d-inline">Create New Location</h1>
+            <a href="/locations" class="btn btn-outline-info my-auto">Return</a>
+        </div>
+        <form action="/locations" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="area">Area of the Location:</label>
+                <input class="form-control" type="text" name="area" id="area" placeholder="Area Name in the UK" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="place">Place of the Area:</label>
+                <input class="form-control" type="text" name="place" id="place" placeholder="Place Name of the above Area" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="latitude">Latitude</label>
+                <input class="form-control" type="number" name="latitude" id="latitude" step="any" placeholder="Latitude" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="longitude">Longitude</label>
+                <input class="form-control" type="number" name="longitude" id="longitude" step="any" placeholder="Longitude" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image of the Location:</label>
+                <input type="text" class="form-control" name="image" id="image" placeholder="Image URL" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <input type="text" name="boulders" id="boulders" style="display: none;" value="<%= [] %>">
+            <button class="btn btn-primary w-100 mt-3 mb-5">Submit</button>
+        </form>
+    </div>
+</div>

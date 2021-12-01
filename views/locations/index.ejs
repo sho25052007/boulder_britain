@@ -1,0 +1,46 @@
+<% layout('layouts/boilerplate') %>
+    <div class="d-flex justify-content-between">
+        <h1 class="d-inline">All Locations</h1>
+        <a href="/locations/new" class="btn btn-outline-success my-auto">Add a New Location</a>
+    </div>
+    <div class="accordion accordion-flush mb-5 mt-3" id="accordionAreaLocation">
+        <% const locationKey = Object.keys(locationByArea) %>
+        <% for(area of locationKey) { %>
+        <% const index = locationKey.indexOf(area) %>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-heading<%= index %>">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= index %>" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <%= area %>
+                </button>
+            </h2>
+            <% const areaData = locationByArea[area] %>
+            <% areaDataList = [] %>
+            <% areaData.forEach(place => { %>
+                <% areaDataList.push([place['place'], place['image']]) %>
+            <% }) %>
+            <% const orderedAreaData = areaDataList.sort((a, b) => { return (a.place < b.place) ? -1 : (a.place > b.place) ? 1 : 0}) %>
+            <div id="flush-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= index %>" data-bs-parent="#accordionAreaLocation">
+                <div class="accordion-body">
+                    <div class="row">
+                    <% orderedAreaData.forEach(placeName => { %>
+                        <div class="col-sm-6 p-3">
+                            <div class="card">
+                                <img src="<%= placeName[1] %>" class="card-img-top" alt="random landscape image">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="/boulders/<%= placeName[0] %>"><%= placeName[0] %></a></h5>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/locations/<%= placeName[0] %>/edit" class="btn btn-success">Edit <%= placeName[0] %></a>
+                                        <form class="d-inline" action="/locations/<%= placeName[0] %>?_method=DELETE" method="POST">
+                                            <button type="submit" class="btn btn-danger">Delete <%= placeName[0] %></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
