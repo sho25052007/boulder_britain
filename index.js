@@ -45,14 +45,12 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig))
 
-// app.use(flash());
-// app.use((req, res, next) => {
-//     res.locals.success = req.flash('success');
-//     next();
-// })
-
-
-
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 app.use('/locations', locationRoutes);
 app.use('/boulders', boulderRoutes);

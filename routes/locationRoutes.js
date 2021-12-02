@@ -4,6 +4,7 @@ const router = express.Router();
 const Location = require('../models/location');
 const AppError = require('../utils/AppError');
 const { locationSchema } = require('../joiSchema.js');
+const flash = require('connect-flash');
 
 const wrapAsync = require('../utils/wrapper');
 
@@ -21,7 +22,6 @@ const grouping = (objArr, prop) => {
 const validateLocation = (req, res, next) => {
     const { error } = locationSchema.validate(req.body);
     if (error) {
-        // console.log(error);
         const msg = error.details.map(el=>el.message).join(',');
         throw new AppError(msg, 400);
     } else {
@@ -32,7 +32,6 @@ const validateLocation = (req, res, next) => {
 //SHOW LOCATION
 router.get('/', wrapAsync(async(req, res, next) => {
     const location = await Location.find({})
-    // console.log(location)
     const locationByArea = grouping(location, 'area')
     res.render('locations/index', { location, locationByArea, titleInHead: 'List of Boulder Locations' })
 }));
@@ -47,7 +46,7 @@ router.post('/', validateLocation, wrapAsync(async(req, res, next) => {
     delete req.body['boulders'];
     const newPlaceName = new Location(req.body);
     await newPlaceName.save();
-    // req.flash('success', 'Successfully made new location!');
+    req.flash('success', 'Successfully made new location!');
     res.redirect(`/boulders/${newPlaceName.place}`)
 }));
 
@@ -55,6 +54,10 @@ router.post('/', validateLocation, wrapAsync(async(req, res, next) => {
 router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`})
+    if (!placeData.length) {
+        req.flash('error', 'Cannot edit that location!');
+        return res.redirect('/locations');
+    }
     res.render('locations/edit', { placeData, placeName, titleInHead: 'Edit ' + placeName });
 }));
 
@@ -63,17 +66,16 @@ router.put('/:placeName', validateLocation, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const newPlace = req.body.place;
     delete req.body['boulders'];
-    console.log(req.body)
     const placeData = await Location.findOneAndUpdate( {place: placeName}, { $set: req.body }, { runValidator: true, new: true });
-    console.log(placeData)
+    req.flash('success', 'Successfully upgraded location!');
     res.redirect(`/boulders/${newPlace}`);
 }));
 
 //DELETE LOCATION
 router.delete('/:placeName', wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
-    // console.log(req.params)
     const placeData = await Location.findOneAndDelete({place: `${placeName}`});
+    req.flash('success', 'Successfully deleted location!');
     res.redirect('/locations/');
 }));
 

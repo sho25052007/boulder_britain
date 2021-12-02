@@ -27,6 +27,10 @@ const validateBoulder = (req, res, next) => {
 router.get('/:placeName', wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
+    if (!placeData.length) {
+        req.flash('error', 'Cannot find that bouldering location!');
+        return res.redirect('/locations');
+    }
     const boulderReviews = new Object();
     if (placeData[0].boulders){
         const allBoulders = placeData[0].boulders
@@ -57,6 +61,7 @@ router.post('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
     await newBoulder.save();
     placeData[0].boulders.push(newBoulder);
     await placeData[0].save();
+    req.flash('success', 'Successfully made new route!');
     res.redirect(`/boulders/${placeName}`);
 }));
 
@@ -64,6 +69,10 @@ router.post('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
 router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
+    if (!placeData.length) {
+        req.flash('error', 'Cannot find that bouldering location to edit!');
+        return res.redirect('/locations');
+    }
     const bouldersList = placeData[0].boulders;
     console.log(bouldersList);
     res.render('boulders/edit', { placeName, bouldersList, gradesNum, titleInHead: 'Edit Routes' });
@@ -78,8 +87,8 @@ router.put('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
         const nameData = req.body[index].name;
         const gradeData = req.body[index].grade;
         const boulderData = await Boulder.findByIdAndUpdate( boulder._id, {name: nameData, grade: gradeData}, {runValidator: true, new: true});
-        console.log(boulderData)
     })
+    req.flash('success', 'Successfully updated route!');
     res.redirect(`/boulders/${placeName}`);
 }));
 
@@ -88,6 +97,7 @@ router.delete('/:placeName/:boulderName', wrapAsync(async(req, res, next) => {
     const { placeName, boulderName } = req.params;
     // console.log(req.params)
     const boulderData = await Boulder.findOneAndDelete({name: `${boulderName}`});
+    req.flash('success', 'Successfully deleted route!');
     res.redirect(`/boulders/${placeName}`);
 }));
 

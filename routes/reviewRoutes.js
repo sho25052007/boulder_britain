@@ -27,6 +27,7 @@ router.post('/', validateReview, wrapAsync(async(req, res) => {
     await review.save();
     boulderData[0].reviews.push(review);
     await boulderData[0].save();
+    req.flash('success', 'Successfully made new review!');
     res.redirect(`/boulders/${placeName}`);
 }));
 
@@ -36,6 +37,7 @@ router.delete('/:reviewId', async(req, res, next) => {
     const foundBoulder = await Boulder.find({name: `${boulderName}`});
     await Boulder.findByIdAndDelete(foundBoulder._id, {$pull: {reviews: reviewId}});
     await Review.findByIdAndDelete(req.params.reviewId);
+    req.flash('success', 'Successfully deleted review!');
     res.redirect(`/boulders/${placeName}`);
 })
 
