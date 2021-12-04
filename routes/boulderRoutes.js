@@ -8,6 +8,8 @@ const wrapAsync = require('../utils/wrapper');
 const { boulderSchema } = require('../joiSchema.js');
 const AppError = require('../utils/AppError');
 
+const {isLoggedIn} = require('../middleware');
+
 const gradesNum = ["8C", "8B+", "8B", "8A+", "8A", "7C+", "7C", "7B+", "7B", "7A+", "7A", "6C+", "6C", "6B+", "6B", "6A+", "6A", "5+", "5", "4+", "4"];
 
 const validateBoulder = (req, res, next) => {
@@ -24,7 +26,7 @@ const validateBoulder = (req, res, next) => {
 
 
 //SHOW ROUTE BY PLACE
-router.get('/:placeName', wrapAsync(async(req, res, next) => {
+router.get('/:placeName', isLoggedIn, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
     if (!placeData.length) {
@@ -48,13 +50,13 @@ router.get('/:placeName', wrapAsync(async(req, res, next) => {
 }));
 
 //GET CREATE ROUTE
-router.get('/:placeName/new', (req, res) => {
+router.get('/:placeName/new', isLoggedIn, (req, res) => {
     const { placeName } = req.params;
     res.render('boulders/new', { placeName, gradesNum, titleInHead: 'Create New Route'});
 });
 
 //CREATE ROUTE
-router.post('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
+router.post('/:placeName', isLoggedIn, validateBoulder, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const newBoulder = new Boulder(req.body[0]);
     const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
@@ -66,7 +68,7 @@ router.post('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
 }));
 
 //GET ROUTE EDIT
-router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
+router.get('/:placeName/edit', isLoggedIn, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
     if (!placeData.length) {
@@ -79,7 +81,7 @@ router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
 }));
 
 //PUT ROUTE EDIT
-router.put('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
+router.put('/:placeName', isLoggedIn, validateBoulder, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
     const bouldersList = placeData[0].boulders;
@@ -93,7 +95,7 @@ router.put('/:placeName', validateBoulder, wrapAsync(async(req, res, next) => {
 }));
 
 //DELETE ROUTE
-router.delete('/:placeName/:boulderName', wrapAsync(async(req, res, next) => {
+router.delete('/:placeName/:boulderName', isLoggedIn, wrapAsync(async(req, res, next) => {
     const { placeName, boulderName } = req.params;
     // console.log(req.params)
     const boulderData = await Boulder.findOneAndDelete({name: `${boulderName}`});

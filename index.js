@@ -1,18 +1,21 @@
 const express = require('express');
 
-const locationRoutes = require('./routes/locationRoutes');
-const boulderRoutes = require('./routes/boulderRoutes');
-const reviewRoutes = require('./routes/reviewRoutes');
-const gradeRoutes = require('./routes/gradeRoutes');
-const AppError = require('./utils/AppError');
-
 const ejsMate = require('ejs-mate');
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
+const locationRoutes = require('./routes/locationRoutes');
+const boulderRoutes = require('./routes/boulderRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const gradeRoutes = require('./routes/gradeRoutes');
+const authRoutes = require('./routes/authRoutes');
+const AppError = require('./utils/AppError');
 
 mongoose.connect('mongodb://localhost:27017/boulderBritain', {
     useNewUrlParser: true,
@@ -43,15 +46,24 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-app.use(session(sessionConfig))
 
+app.use(session(sessionConfig))
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
+app.use('/', authRoutes);
 app.use('/locations', locationRoutes);
 app.use('/boulders', boulderRoutes);
 app.use('/boulders/:placeName/:boulderName/review', reviewRoutes);

@@ -5,8 +5,8 @@ const Location = require('../models/location');
 const AppError = require('../utils/AppError');
 const { locationSchema } = require('../joiSchema.js');
 const flash = require('connect-flash');
-
 const wrapAsync = require('../utils/wrapper');
+const {isLoggedIn} = require('../middleware');
 
 const grouping = (objArr, prop) => {
     return objArr.reduce((acc, obj) => {
@@ -37,12 +37,12 @@ router.get('/', wrapAsync(async(req, res, next) => {
 }));
 
 //GET CREATE LOCATION
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('locations/new', {titleInHead : 'Create New Location' });
 });
 
 //CREATE LOCATION
-router.post('/', validateLocation, wrapAsync(async(req, res, next) => {
+router.post('/', isLoggedIn, validateLocation, wrapAsync(async(req, res, next) => {
     delete req.body['boulders'];
     const newPlaceName = new Location(req.body);
     await newPlaceName.save();
@@ -51,7 +51,7 @@ router.post('/', validateLocation, wrapAsync(async(req, res, next) => {
 }));
 
 //GET LOCATION EDIT
-router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
+router.get('/:placeName/edit', isLoggedIn, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.find({place: `${placeName}`})
     if (!placeData.length) {
@@ -62,7 +62,7 @@ router.get('/:placeName/edit', wrapAsync(async(req, res, next) => {
 }));
 
 //PUT LOCATION EDIT
-router.put('/:placeName', validateLocation, wrapAsync(async(req, res, next) => {
+router.put('/:placeName', isLoggedIn, validateLocation, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const newPlace = req.body.place;
     delete req.body['boulders'];
@@ -72,11 +72,11 @@ router.put('/:placeName', validateLocation, wrapAsync(async(req, res, next) => {
 }));
 
 //DELETE LOCATION
-router.delete('/:placeName', wrapAsync(async(req, res, next) => {
+router.delete('/:placeName', isLoggedIn, wrapAsync(async(req, res, next) => {
     const { placeName } = req.params;
     const placeData = await Location.findOneAndDelete({place: `${placeName}`});
     req.flash('success', 'Successfully deleted location!');
     res.redirect('/locations/');
 }));
 
-module.exports = router
+module.exports = router;
