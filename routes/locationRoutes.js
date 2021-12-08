@@ -1,82 +1,28 @@
 const express = require('express');
 const router = express.Router();
 
-const Location = require('../models/location');
-const AppError = require('../utils/AppError');
-const { locationSchema } = require('../joiSchema.js');
-const flash = require('connect-flash');
 const wrapAsync = require('../utils/wrapper');
-const {isLoggedIn} = require('../middleware');
+const { isLoggedIn, validateLocation  } = require('../middleware');
+const locationControllers = require('../controllers/locationControllers');
 
-const grouping = (objArr, prop) => {
-    return objArr.reduce((acc, obj) => {
-        let key = obj[prop]
-        if(!acc[key]) {
-            acc[key] = []
-        }
-        acc[key].push(obj)
-        return acc
-    }, {})
-}
 
-const validateLocation = (req, res, next) => {
-    const { error } = locationSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el=>el.message).join(',');
-        throw new AppError(msg, 400);
-    } else {
-        next();
-    }
-}
-
-//SHOW LOCATION
-router.get('/', wrapAsync(async(req, res, next) => {
-    const location = await Location.find({})
-    const locationByArea = grouping(location, 'area')
-    res.render('locations/index', { location, locationByArea, titleInHead: 'List of Boulder Locations' })
-}));
+router.route('/')
+    //SHOW LOCATION
+    .get(wrapAsync(locationControllers.indexLocation))
+    //CREATE LOCATION
+    .post(isLoggedIn, validateLocation, wrapAsync(locationControllers.postNewLocation));
 
 //GET CREATE LOCATION
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('locations/new', {titleInHead : 'Create New Location' });
-});
-
-//CREATE LOCATION
-router.post('/', isLoggedIn, validateLocation, wrapAsync(async(req, res, next) => {
-    delete req.body['boulders'];
-    const newPlaceName = new Location(req.body);
-    await newPlaceName.save();
-    req.flash('success', 'Successfully made new location!');
-    res.redirect(`/boulders/${newPlaceName.place}`)
-}));
+router.get('/new', isLoggedIn, locationControllers.newLocation);
 
 //GET LOCATION EDIT
-router.get('/:placeName/edit', isLoggedIn, wrapAsync(async(req, res, next) => {
-    const { placeName } = req.params;
-    const placeData = await Location.find({place: `${placeName}`})
-    if (!placeData.length) {
-        req.flash('error', 'Cannot edit that location!');
-        return res.redirect('/locations');
-    }
-    res.render('locations/edit', { placeData, placeName, titleInHead: 'Edit ' + placeName });
-}));
+router.get('/:placeName/edit', isLoggedIn, wrapAsync(locationControllers.editLocation));
 
-//PUT LOCATION EDIT
-router.put('/:placeName', isLoggedIn, validateLocation, wrapAsync(async(req, res, next) => {
-    const { placeName } = req.params;
-    const newPlace = req.body.place;
-    delete req.body['boulders'];
-    const placeData = await Location.findOneAndUpdate( {place: placeName}, { $set: req.body }, { runValidator: true, new: true });
-    req.flash('success', 'Successfully upgraded location!');
-    res.redirect(`/boulders/${newPlace}`);
-}));
+router.route('/:placeName')
+    //PUT LOCATION EDIT
+    .put(isLoggedIn, validateLocation, wrapAsync(locationControllers.putEditLocation))
+    //DELETE LOCATION
+    .delete(isLoggedIn, wrapAsync(locationControllers.deleteLocation));
 
-//DELETE LOCATION
-router.delete('/:placeName', isLoggedIn, wrapAsync(async(req, res, next) => {
-    const { placeName } = req.params;
-    const placeData = await Location.findOneAndDelete({place: `${placeName}`});
-    req.flash('success', 'Successfully deleted location!');
-    res.redirect('/locations/');
-}));
 
 module.exports = router;

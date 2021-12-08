@@ -5,34 +5,32 @@
             <h1 class="d-inline">Edit Routes</h1>
             <a href="/boulders/<%= placeName %>" class="btn btn-outline-info my-auto">Return</a>
         </div>
-        <form action="/boulders/<%= placeName %>?_method=PUT" method="POST" class="validated-form" novalidate>
-            <% bouldersList.forEach((boulder, index) => { %>
+        <form action="/boulders/<%= placeName %>/<%= boulderData[0].name %>?_method=PUT" method="POST" class="validated-form" novalidate>
             <div class="border border-2 border-top border-bottom my-3 p-3">
                 <div class="mb-3">
                     <label class="form-label" for="name">Change Name of the Route:</label>
-                    <input class="form-control" type="text" name="<%=index%>[name]" id="name" placeholder="Route Name" value="<%= boulder.name %>" required>
+                    <input class="form-control" type="text" name="name" id="name" placeholder="Route Name" value="<%= boulderData[0].name %>" required>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
                     <label for="grade">Select a Grade:</label>
-                    <select class="form-select" name="<%=index%>[grade]" id="grade">
+                    <select class="form-select" name="grade" id="grade">
                         <% for (let gradeNum of gradesNum) { %>
-                            <option value="<%= gradeNum %>" <%= boulder.grade === gradeNum?'selected':'' %>><%= gradeNum %></option>
+                            <option value="<%= gradeNum %>" <%= boulderData[0].grade === gradeNum?'selected':'' %>><%= gradeNum %></option>
                         <% } %>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Change Image of Route:</label>
-                    <input type="text" class="form-control" name="<%=index%>[image]" id="image" placeholder="Image URL" value="<%= boulder.image %>" required>
+                    <input type="text" class="form-control" name="image" id="image" placeholder="Image URL" value="<%= boulderData[0].image %>" required>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Change Description of Route:</label>
-                    <textarea type="text" class="form-control" name="<%=index%>[description]" id="description" placeholder="Description Text" required><%= boulder.description %></textarea>
+                    <textarea type="text" class="form-control" name="description" id="description" placeholder="Description Text" required><%= boulderData[0].description %></textarea>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <% }) %>
             <button class="btn btn-primary w-100 mt-3 mb-5">Submit</button>
         </form>
     </div>

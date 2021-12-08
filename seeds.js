@@ -1116,11 +1116,12 @@ const randomNum = (min, max) => {
 
 // -----> everything below this line is to seed Boulders ---after that seed Location!
 
-// const routeObj = function Object(name, grade, image, description) {
+// const routeObj = function Object(name, grade, image, description, author) {
 //     this.name = name;
 //     this.grade = grade;
 //     this.image = image;
 //     this.description = description;
+//     this.author = author;
 // }
 
 // const routeList = [];
@@ -1129,7 +1130,8 @@ const randomNum = (min, max) => {
 //         const randGrade = grades[randomNum(0, grades.length)];
 //         const imageURL = 'https://source.unsplash.com/collection/862371'
 //         const descriptionText = 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio harum ea, magnam qui asperiores autem deleniti suscipit reprehenderit molestiae! Distinctio facere eaque debitis dolorum officia! Suscipit tenetur iure sapiente magni!'
-//         const route = new routeObj(name, randGrade, imageURL, descriptionText);
+//         const initialUser = '61ac9fb14dcb3049e592e745' //change this ID to match an admin user
+//         const route = new routeObj(name, randGrade, imageURL, descriptionText, initialUser);
 //         routeList.push(route);
 // })
 
