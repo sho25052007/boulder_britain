@@ -5,12 +5,20 @@ const wrapAsync = require('../utils/wrapper');
 const { isLoggedIn, validateLocation  } = require('../middleware');
 const locationControllers = require('../controllers/locationControllers');
 
+const multer = require('multer');
+const { storage } = require('../cloudinary')
+const upload = multer({ storage });
+
 
 router.route('/')
     //SHOW LOCATION
     .get(wrapAsync(locationControllers.indexLocation))
     //CREATE LOCATION
-    .post(isLoggedIn, validateLocation, wrapAsync(locationControllers.postNewLocation));
+    .post(
+        isLoggedIn,
+        upload.single('image'),
+        validateLocation,
+        wrapAsync(locationControllers.postNewLocation));
 
 //GET CREATE LOCATION
 router.get('/new', isLoggedIn, locationControllers.newLocation);
@@ -20,7 +28,7 @@ router.get('/:placeName/edit', isLoggedIn, wrapAsync(locationControllers.editLoc
 
 router.route('/:placeName')
     //PUT LOCATION EDIT
-    .put(isLoggedIn, validateLocation, wrapAsync(locationControllers.putEditLocation))
+    .put(isLoggedIn, upload.single('image'), validateLocation, wrapAsync(locationControllers.putEditLocation))
     //DELETE LOCATION
     .delete(isLoggedIn, wrapAsync(locationControllers.deleteLocation));
 

@@ -1116,10 +1116,10 @@ const randomNum = (min, max) => {
 
 // -----> everything below this line is to seed Boulders ---after that seed Location!
 
-// const routeObj = function Object(name, grade, image, description, author) {
+// const routeObj = function Object(name, grade, images, description, author) {
 //     this.name = name;
 //     this.grade = grade;
-//     this.image = image;
+//     this.images = images;
 //     this.description = description;
 //     this.author = author;
 // }
@@ -1128,7 +1128,16 @@ const randomNum = (min, max) => {
 
 // names.forEach(name => {
 //         const randGrade = grades[randomNum(0, grades.length)];
-//         const imageURL = 'https://source.unsplash.com/collection/862371'
+//         const imageURL = [
+//             {
+//                 url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1638995168/BoulderBritain/ka2kkhdar7rjnd1x6m9w.jpg',
+//                 filename: 'BoulderBritain/ka2kkhdar7rjnd1x6m9w'
+//             },
+//             {
+//                 url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1638995168/BoulderBritain/i8hn1gxcorb5acclx25q.jpg',
+//                 filename: 'BoulderBritain/i8hn1gxcorb5acclx25q'
+//             }
+//         ]
 //         const descriptionText = 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio harum ea, magnam qui asperiores autem deleniti suscipit reprehenderit molestiae! Distinctio facere eaque debitis dolorum officia! Suscipit tenetur iure sapiente magni!'
 //         const initialUser = '61ac9fb14dcb3049e592e745' //change this ID to match an admin user
 //         const route = new routeObj(name, randGrade, imageURL, descriptionText, initialUser);
@@ -1147,7 +1156,7 @@ const randomNum = (min, max) => {
 
 // const setBouldersToLocations = async() => {
 //     const allBoulders = await Boulder.find().exec()
-//     console.log(allBoulders.length);
+//     console.log(allBoulders.length, 'boulders matched');
 
 //     locations.forEach(async(location) => {
 //         const random = randomNum(1, 5);
@@ -1155,7 +1164,10 @@ const randomNum = (min, max) => {
 //         const place = location.place;
 //         const latitude = location.latitude;
 //         const longitude = location.longitude;
-//         const image = 'https://source.unsplash.com/collection/1499877'
+//         const image = {
+//             url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1639001479/BoulderBritain/xal2ib3o48shdw8tgpy5.jpg',
+//             filename: 'BoulderBritain/xal2ib3o48shdw8tgpy5'
+//         }
 //         const boulderLocation = new Location({area: area, place: place, latitude: latitude, longitude: longitude, image: image});
 //         const boulderSet = [];
 //         for (let i = 0; i < random; i++) {

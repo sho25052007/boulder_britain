@@ -25,7 +25,7 @@
                     <% orderedAreaData.forEach(placeName => { %>
                         <div class="col-sm-6 p-3">
                             <div class="card">
-                                <img src="<%= placeName[1] %>" class="card-img-top" alt="random landscape image">
+                                <img src="<%= placeName[1].url %>" class="card-img-top" alt="random landscape image">
                                 <div class="card-body">
                                     <h5 class="card-title"><a href="/boulders/<%= placeName[0] %>"><%= placeName[0] %></a></h5>
                                     <div class="d-flex justify-content-between">

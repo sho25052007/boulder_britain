@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
+const { cloudinary } = require('../cloudinary');
 const Review = require('./review');
 const Schema = mongoose.Schema
+
+
+const imageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+imageSchema.virtual('thumbnail').get(function() {
+    return this.url.replace('/upload', '/upload/w_200')
+});
 
 const boulderSchema = new Schema({
     name: {
@@ -11,10 +22,7 @@ const boulderSchema = new Schema({
         type: String,
         required: true
     },
-    image: {
-        type: String,
-        required: true
-    },
+    images: [imageSchema],
     description: {
         type: String,
         required: true
@@ -24,12 +32,17 @@ const boulderSchema = new Schema({
 });
 
 boulderSchema.post('findOneAndDelete', async function(doc) {
-    if (doc) {
+    if (doc.reviews) {
         await Review.deleteMany({
             _id: {
                 $in: doc.reviews
             }
         })
+    }
+    if (doc.images) {
+        for (let image of doc.images) {
+            await cloudinary.uploader.destroy(image.filename);
+        }
     }
 })
 

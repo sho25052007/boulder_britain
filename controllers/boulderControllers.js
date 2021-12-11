@@ -1,5 +1,6 @@
 const Boulder = require('../models/boulder');
 const Location = require('../models/location');
+const { cloudinary } = require('../cloudinary')
 
 const gradesNum = ["8C", "8B+", "8B", "8A+", "8A", "7C+", "7C", "7B+", "7B", "7A+", "7A", "6C+", "6C", "6B+", "6B", "6A+", "6A", "5+", "5", "4+", "4"];
 
@@ -43,9 +44,12 @@ module.exports.newBoulder = (req, res) => {
 
 module.exports.postNewBoulder = async(req, res, next) => {
     const { placeName } = req.params;
-    const newBoulder = new Boulder(req.body[0]);
+    console.log(req.body)
+    const newBoulder = new Boulder(req.body);
+    newBoulder.images = req.files.map(f => ({url: f.path, filename: f.filename}));
     newBoulder.author = req.user._id;
-    const placeData = await Location.find({place: `${placeName}`}).populate('boulders');
+    const placeData = await Location.find({place: `${placeName}`}).populate('boulders')
+    console.log(newBoulder);
     await newBoulder.save();
     placeData[0].boulders.push(newBoulder);
     await placeData[0].save();
@@ -60,12 +64,23 @@ module.exports.editBoulder = async(req, res, next) => {
         req.flash('error', 'Cannot find that bouldering location to edit!');
         return res.redirect('/locations');
     }
+    console.log(boulderData)
     res.render('boulders/edit', { boulderData, placeName, gradesNum, titleInHead: `Edit ${boulderName}` });
 }
 
 module.exports.putEditBoulder = async(req, res, next) => {
     const { placeName, boulderName } = req.params;
+    console.log(req.body, 'putEditBoulder')
     const newBoulderData = await Boulder.findOneAndUpdate( {name: boulderName}, { $set: req.body }, {runValidator: true, new: true});
+    const images = req.files.map(f => ({url: f.path, filename: f.filename}))
+    newBoulderData.images.push(...images);
+    await newBoulderData.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await newBoulderData.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     req.flash('success', 'Successfully updated route!');
     res.redirect(`/boulders/${placeName}`);
 }

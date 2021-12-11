@@ -5,10 +5,29 @@
         <p>No boulders listed, please submit new route.</p>
     <% } else if(placeData[0].boulders) { %>
         <div class="row">
-            <% for(boulder of placeData[0].boulders) { %>
+            <% placeData[0].boulders.forEach((boulder, position) => { %>
                 <div class="col-6 my-5">
                     <div class="card">
-                        <img src="<%= boulder.image %>" class="card-img-top" alt="random boulder picture">
+                        <div id="carousel<%= position %>" class="carousel slide" data-bs-interval="false">
+                            <div class="carousel-inner">
+                                <% console.log(boulder.images) %>
+                                <% boulder.images.forEach((image, index) => { %>
+                                <div class="carousel-item<%= index === 0 ? ' active' : ''%>">
+                                    <img src="<%= image.url %>" class="d-block w-100">
+                                </div>
+                                <% }) %>
+                            </div>
+                            <% if(boulder.images.length > 1) {%>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel<%= position %>" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel<%= position %>" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                                </button>
+                            <% } %>
+                        </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h3 class="card-title"><%= boulder.name %> [<a href="/grade/<%= boulder.grade %>"><%= boulder.grade %></a>]</h3>
@@ -33,16 +52,16 @@
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="my-1">Leave a Review:</h5>
                             <fieldset class="starability-grow">
-                                <input type="radio" id="first-rate1" name="rating" value="1"/>
-                                <label for="first-rate1" title="Terrible">1 star</label>
-                                <input type="radio" id="first-rate2" name="rating" value="2"/>
-                                <label for="first-rate2" title="Not good">2 stars</label>
-                                <input type="radio" id="first-rate3" name="rating" checked value="3"/>
-                                <label for="first-rate3" title="Average">3 stars</label>
-                                <input type="radio" id="first-rate4" name="rating" value="4"/>
-                                <label for="first-rate4" title="Very good">4 stars</label>
-                                <input type="radio" id="first-rate5" name="rating" value="5"/>
-                                <label for="first-rate5" title="Amazing">5 stars</label>
+                                <input type="radio" id="<%= position %>-rate1" name="rating" value="1"/>
+                                <label for="<%= position %>-rate1" title="Terrible">1 star</label>
+                                <input type="radio" id="<%= position %>-rate2" name="rating" value="2"/>
+                                <label for="<%= position %>-rate2" title="Not good">2 stars</label>
+                                <input type="radio" id="<%= position %>-rate3" name="rating" checked value="3"/>
+                                <label for="<%= position %>-rate3" title="Average">3 stars</label>
+                                <input type="radio" id="<%= position %>-rate4" name="rating" value="4"/>
+                                <label for="<%= position %>-rate4" title="Very good">4 stars</label>
+                                <input type="radio" id="<%= position %>-rate5" name="rating" value="5"/>
+                                <label for="<%= position %>-rate5" title="Amazing">5 stars</label>
                             </fieldset>
                         </div>
                         <div class="mb-3">
@@ -76,7 +95,7 @@
                     <% } %>
                 </div>
                 <hr>
-            <% } %>
+            <% }) %>
         </div>
     <% } %>
     <div class="d-flex py-5 justify-content-center">

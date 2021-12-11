@@ -5,7 +5,7 @@
                 <h1 class="d-inline">Edit <%= placeName %></h1>
                 <a href="/locations" class="btn btn-outline-info my-auto">Return</a>
             </div>
-            <form action="/locations/<%= placeName %>?_method=PUT" method="POST" class="validated-form" novalidate>
+            <form action="/locations/<%= placeName %>?_method=PUT" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="area">Change Area of the Place:</label>
                     <input class="form-control" type="text" name="area" id="area" placeholder="Place Area" value="<%= placeData[0].area %>" required>
@@ -26,9 +26,9 @@
                     <input class="form-control" type="number" step="any" name="longitude" id="longitude" placeholder="Longitude" value="<%= placeData[0].longitude %>" required>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Change Image of Route:</label>
-                    <input type="text" class="form-control" name="image" id="image" placeholder="Image URL" value="<%= placeData[0].image %>" required>
+                <div class="input-group mb-3">
+                    <input name="image" type="file" class="form-control" id="image" required>
+                    <label class="input-group-text" for="image">Upload</label>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
                 <input type="text" name="boulders" id="boulders" style="display: none;" value="<%= placeData[0].boulders %>">

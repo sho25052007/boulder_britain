@@ -5,7 +5,7 @@
             <h1 class="d-inline">Create New Location</h1>
             <a href="/locations" class="btn btn-outline-info my-auto">Return</a>
         </div>
-        <form action="/locations" method="POST" class="validated-form" novalidate>
+        <form action="/locations" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
             <div class="mb-3">
                 <label class="form-label" for="area">Area of the Location:</label>
                 <input class="form-control" type="text" name="area" id="area" placeholder="Area Name in the UK" required>
@@ -26,9 +26,9 @@
                 <input class="form-control" type="number" name="longitude" id="longitude" step="any" placeholder="Longitude" required>
                 <div class="valid-feedback">Looks good!</div>
             </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Image of the Location:</label>
-                <input type="text" class="form-control" name="image" id="image" placeholder="Image URL" required>
+            <div class="input-group mb-3">
+                <input name="image" type="file" class="form-control" id="image" required>
+                <label class="input-group-text" for="image">Upload</label>
                 <div class="valid-feedback">Looks good!</div>
             </div>
             <input type="text" name="boulders" id="boulders" style="display: none;" value="<%= [] %>">

@@ -14,6 +14,9 @@ module.exports.newLocation = (req, res) => {
 module.exports.postNewLocation = async(req, res, next) => {
     delete req.body['boulders'];
     const newPlaceName = new Location(req.body);
+    console.log(req.file)
+    newPlaceName.image.url = req.file.path;
+    newPlaceName.image.filename = req.file.filename;
     await newPlaceName.save();
     req.flash('success', 'Successfully made new location!');
     res.redirect(`/boulders/${newPlaceName.place}`)
@@ -30,10 +33,20 @@ module.exports.editLocation = async(req, res, next) => {
 }
 
 module.exports.putEditLocation = async(req, res, next) => {
+    console.log('hi from putEditLocation');
     const { placeName } = req.params;
     const newPlace = req.body.place;
     delete req.body['boulders'];
-    const placeData = await Location.findOneAndUpdate( {place: placeName}, { $set: req.body }, { runValidator: true, new: true });
+    const editLocationObj = {
+    area : req.body.area,
+    place : req.body.place,
+    latitude : req.body.latitude,
+    longitude : req.body.longitude,
+    image : {
+        url : req.file.path,
+        filename : req.file.filename
+    }};
+    const placeData = await Location.findOneAndUpdate( {place: placeName}, { $set: editLocationObj}, { runValidator: true, new: true, overwrite: true });
     req.flash('success', 'Successfully upgraded location!');
     res.redirect(`/boulders/${newPlace}`);
 }

@@ -20,8 +20,8 @@ const locationSchema = new Schema({
         required: true
     },
     image: {
-        type: String,
-        required: true
+        url: String,
+        filename: String
     },
     boulders: [{type: Schema.Types.ObjectId, ref:'Boulder'}]
 })

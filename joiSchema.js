@@ -3,9 +3,9 @@ const Joi = require('joi');
 module.exports.boulderSchema = Joi.object({
     name: Joi.string().required(),
     grade: Joi.string().required(),
-    image: Joi.string().required(),
     description: Joi.string().required(),
-    reviews: Joi.any()
+    reviews: Joi.any(),
+    deleteImages: Joi.array()
 })
 
 module.exports.locationSchema = Joi.object({
@@ -13,7 +13,6 @@ module.exports.locationSchema = Joi.object({
     place: Joi.string().required(),
     latitude: Joi.number().required().min(0),
     longitude: Joi.number().required(),
-    image: Joi.string().required(),
     boulders: Joi.any()
 });
 

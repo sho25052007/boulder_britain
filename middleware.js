@@ -33,13 +33,10 @@ module.exports.isReviewAuthor = async(req, res, next) => {
 }
 
 module.exports.validateBoulder = (req, res, next) => {
-    for (let i=0; i < req.body.length; i++){
-        console.log(req.body[i])
-        const { error } = boulderSchema.validate(req.body[i]);
-        if (error) {
-            const msg = error.details.map(el=>el.message).join(',');
-            throw new AppError(msg, 400);
-        }
+    const { error } = boulderSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el=>el.message).join(',');
+        throw new AppError(msg, 400);
     }
     next();
 }
