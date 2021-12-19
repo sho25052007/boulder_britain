@@ -11,8 +11,7 @@ module.exports.boulderSchema = Joi.object({
 module.exports.locationSchema = Joi.object({
     area: Joi.string().required(),
     place: Joi.string().required(),
-    latitude: Joi.number().required().min(0),
-    longitude: Joi.number().required(),
+    geometry: Joi.any(),
     boulders: Joi.any()
 });
 

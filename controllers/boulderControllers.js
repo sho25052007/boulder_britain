@@ -1,6 +1,6 @@
 const Boulder = require('../models/boulder');
 const Location = require('../models/location');
-const { cloudinary } = require('../cloudinary')
+const { cloudinary } = require('../cloudinary');
 
 const gradesNum = ["8C", "8B+", "8B", "8A+", "8A", "7C+", "7C", "7B+", "7B", "7A+", "7A", "6C+", "6C", "6B+", "6B", "6A+", "6A", "5+", "5", "4+", "4"];
 

@@ -1,4 +1,10 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" type="text/css" href="/stylesheets/images.css">
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+<div class="col-12 mb-5">
+    <div id='map' style='height: 300px;'></div>
+</div>
 <div class="row">
     <div class="col-6 offset-3">
         <div class="d-flex justify-content-between mb-3">
@@ -6,6 +12,13 @@
             <a href="/locations" class="btn btn-outline-info my-auto">Return</a>
         </div>
         <form action="/locations" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
+            <div class="mb-3">
+                <p>
+                    Set location with the map (above).
+                    <br>Search location and then drag and drop red marker for exact location.
+                    <br>Blue marker shows searched location point.
+                </p>
+            </div>
             <div class="mb-3">
                 <label class="form-label" for="area">Area of the Location:</label>
                 <input class="form-control" type="text" name="area" id="area" placeholder="Area Name in the UK" required>
@@ -16,23 +29,28 @@
                 <input class="form-control" type="text" name="place" id="place" placeholder="Place Name of the above Area" required>
                 <div class="valid-feedback">Looks good!</div>
             </div>
-            <div class="mb-3">
-                <label class="form-label" for="latitude">Latitude</label>
-                <input class="form-control" type="number" name="latitude" id="latitude" step="any" placeholder="Latitude" required>
-                <div class="valid-feedback">Looks good!</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="longitude">Longitude</label>
-                <input class="form-control" type="number" name="longitude" id="longitude" step="any" placeholder="Longitude" required>
-                <div class="valid-feedback">Looks good!</div>
-            </div>
-            <div class="input-group mb-3">
+            <!-- <div class="input-group mb-3">
                 <input name="image" type="file" class="form-control" id="image" required>
                 <label class="input-group-text" for="image">Upload</label>
                 <div class="valid-feedback">Looks good!</div>
+            </div> -->
+            <div class="mb-3">
+                <label class="form-label">Choose Image:</label>
+                <div class="form-file custom-file">
+                      <input class="form-control custom-file-input" type="file" id="image" name="image" single onchange="previewSingle(event)">
+                      <label for="image" class="form-label custom-file-label"></label>
             </div>
-            <input type="text" name="boulders" id="boulders" style="display: none;" value="<%= [] %>">
+            <div id="formFile"></div>
+            </div>
+            <input type="hidden" name="boulders" id="boulders" value="<%= [] %>"/>
+            <input type="hidden" name="geometry" id="geometryCoords"/>
             <button class="btn btn-primary w-100 mt-3 mb-5">Submit</button>
         </form>
     </div>
 </div>
+<script>
+        const mapBoxToken = '<%-process.env.MAPBOX_TOKEN%>'
+</script>
+<script src="/javascripts/addSingleImage.js"></script>
+<script src="/javascripts/newLocationMap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/geojson/0.5.0/geojson.min.js"></script>

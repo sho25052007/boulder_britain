@@ -1,5 +1,8 @@
 <% layout('layouts/boilerplate') %>
 <link rel="stylesheet" type="text/css" href="/stylesheets/starability.css">
+    <div class="col-12 mb-5">
+        <div id='map' style='height: 300px;'></div>
+    </div>
     <h1>All Boulders in <%= placeName %>, <%= placeData[0].area %> </h1>
     <% if(placeData[0].boulders.length == 0) { %>
         <p>No boulders listed, please submit new route.</p>
@@ -102,3 +105,9 @@
         <a class="btn btn-outline-info mx-3" href="/locations">All Locations</a>
         <a class="btn btn-outline-primary mx-3" href="/boulders/<%= placeName %>/new">Create New Route</a>
     </div>
+
+    <script>
+        const mapBoxToken = '<%-process.env.MAPBOX_TOKEN%>'
+        const place = <%- JSON.stringify(placeData[0]) %>
+    </script>
+    <script src="/javascripts/showMapBoulder.js"></script>

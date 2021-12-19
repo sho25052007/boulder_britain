@@ -52,7 +52,7 @@ module.exports.validateReview = (req, res, next) => {
     }
 }
 
-module.exports.validateLocation = (req, res, next) => {
+module.exports.validateLocation = async(req, res, next) => {
     const { error } = locationSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el=>el.message).join(',');

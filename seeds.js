@@ -1168,7 +1168,7 @@ const randomNum = (min, max) => {
 //             url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1639001479/BoulderBritain/xal2ib3o48shdw8tgpy5.jpg',
 //             filename: 'BoulderBritain/xal2ib3o48shdw8tgpy5'
 //         }
-//         const boulderLocation = new Location({area: area, place: place, latitude: latitude, longitude: longitude, image: image});
+//         const boulderLocation = new Location({area: area, place: place, geometry: { type: 'Point', coordinates: [longitude, latitude]}, image: image});
 //         const boulderSet = [];
 //         for (let i = 0; i < random; i++) {
 //             const boulderPop = allBoulders.pop()

@@ -22,7 +22,7 @@
             <div id="flush-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= index %>" data-bs-parent="#accordionAreaLocation">
                 <div class="accordion-body">
                     <div class="row">
-                    <% orderedAreaData.forEach(placeName => { %>
+                    <% orderedAreaData.forEach((placeName, index) => { %>
                         <div class="col-sm-6 p-3">
                             <div class="card">
                                 <img src="<%= placeName[1].url %>" class="card-img-top" alt="random landscape image">

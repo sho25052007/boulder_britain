@@ -1,5 +1,8 @@
 const Location = require('../models/location');
 const { grouping } = require('../utils/groupingFunc');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 
 module.exports.indexLocation = async(req, res, next) => {
     const location = await Location.find({})
@@ -12,9 +15,10 @@ module.exports.newLocation = (req, res) => {
 }
 
 module.exports.postNewLocation = async(req, res, next) => {
+    console.log('postNewLocation', req.body);
     delete req.body['boulders'];
     const newPlaceName = new Location(req.body);
-    console.log(req.file)
+    newPlaceName.geometry = JSON.parse(req.body.geometry);
     newPlaceName.image.url = req.file.path;
     newPlaceName.image.filename = req.file.filename;
     await newPlaceName.save();
@@ -33,15 +37,14 @@ module.exports.editLocation = async(req, res, next) => {
 }
 
 module.exports.putEditLocation = async(req, res, next) => {
-    console.log('hi from putEditLocation');
+    console.log('hi from putEditLocation', req.body);
     const { placeName } = req.params;
     const newPlace = req.body.place;
     delete req.body['boulders'];
     const editLocationObj = {
     area : req.body.area,
     place : req.body.place,
-    latitude : req.body.latitude,
-    longitude : req.body.longitude,
+    geometry: JSON.parse(req.body.geometry),
     image : {
         url : req.file.path,
         filename : req.file.filename
