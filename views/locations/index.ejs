@@ -3,6 +3,9 @@
         <h1 class="d-inline">All Locations</h1>
         <a href="/locations/new" class="btn btn-outline-success my-auto">Add a New Location</a>
     </div>
+    <div class="col-12 mt-3 mb-5">
+        <div id='map' style='height: 300px;'></div>
+    </div>
     <div class="accordion accordion-flush mb-5 mt-3" id="accordionAreaLocation">
         <% const locationKey = Object.keys(locationByArea) %>
         <% for(area of locationKey) { %>
@@ -44,3 +47,9 @@
         </div>
         <% } %>
     </div>
+
+    <script>
+        const mapBoxToken = '<%-process.env.MAPBOX_TOKEN%>'
+        const locationData = {features: <%- JSON.stringify(location) %>}
+    </script>
+    <script src="/javascripts/indexClusterMap.js"></script>

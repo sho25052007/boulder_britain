@@ -13,7 +13,6 @@
                     <div class="card">
                         <div id="carousel<%= position %>" class="carousel slide" data-bs-interval="false">
                             <div class="carousel-inner">
-                                <% console.log(boulder.images) %>
                                 <% boulder.images.forEach((image, index) => { %>
                                 <div class="carousel-item<%= index === 0 ? ' active' : ''%>">
                                     <img src="<%= image.url %>" class="d-block w-100">
@@ -33,7 +32,10 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h3 class="card-title"><%= boulder.name %> [<a href="/grade/<%= boulder.grade %>"><%= boulder.grade %></a>]</h3>
+                                <div class="d-inline-flex">
+                                    <h3 class="card-title"><%= boulder.name %></h3>
+                                    <a type="button" class="btn btn-sm btn-outline-dark mx-2 my-1" href="/grade/<%= boulder.grade %>"><%= boulder.grade %></a>
+                                </div>
                                 <h6 class="card-subtitle text-muted">by: <%= boulder.author.username %></h6>
                             </div>
                             <p class="card-text"><%= boulder.description %></p>

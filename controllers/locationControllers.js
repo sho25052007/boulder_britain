@@ -7,6 +7,7 @@ const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 module.exports.indexLocation = async(req, res, next) => {
     const location = await Location.find({})
     const locationByArea = grouping(location, 'area')
+    console.log(location[0].properties.popupMarkup)
     res.render('locations/index', { location, locationByArea, titleInHead: 'List of Boulder Locations' })
 }
 
@@ -15,7 +16,7 @@ module.exports.newLocation = (req, res) => {
 }
 
 module.exports.postNewLocation = async(req, res, next) => {
-    console.log('postNewLocation', req.body);
+    // console.log('postNewLocation', req.body);
     delete req.body['boulders'];
     const newPlaceName = new Location(req.body);
     newPlaceName.geometry = JSON.parse(req.body.geometry);
@@ -37,7 +38,7 @@ module.exports.editLocation = async(req, res, next) => {
 }
 
 module.exports.putEditLocation = async(req, res, next) => {
-    console.log('hi from putEditLocation', req.body);
+    // console.log('hi from putEditLocation', req.body);
     const { placeName } = req.params;
     const newPlace = req.body.place;
     delete req.body['boulders'];

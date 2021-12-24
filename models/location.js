@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Boulder = require('./boulder');
 const Schema = mongoose.Schema
+const opts = { toJSON : { virtuals : true } }
 
 const locationSchema = new Schema({
     area: {
@@ -25,7 +26,11 @@ const locationSchema = new Schema({
         filename: String
     },
     boulders: [{type: Schema.Types.ObjectId, ref:'Boulder'}]
-})
+}, opts)
+
+locationSchema.virtual('properties.popupMarkup').get(function() {
+    return `<a style="text-decoration:none; color: #000;" href="/boulders/${this.place}"><h6>${this.place}</h6><h7>${this.area}</h7></a>`
+});
 
 locationSchema.post('findOneAndDelete', async function(doc) {
     if (doc) {
