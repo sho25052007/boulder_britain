@@ -7,7 +7,7 @@ const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 module.exports.indexLocation = async(req, res, next) => {
     const location = await Location.find({})
     const locationByArea = grouping(location, 'area')
-    console.log(location[0].properties.popupMarkup)
+    // console.log(location[0].properties.popupMarkup)
     res.render('locations/index', { location, locationByArea, titleInHead: 'List of Boulder Locations' })
 }
 

@@ -30,7 +30,7 @@
                             <div class="card">
                                 <img src="<%= placeName[1].url %>" class="card-img-top" alt="random landscape image">
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="/boulders/<%= placeName[0] %>"><%= placeName[0] %></a></h5>
+                                    <h5 class="card-title"><a style="text-decoration: none; color: black;" href="/boulders/<%= placeName[0] %>"><%= placeName[0] %></a></h5>
                                     <div class="d-flex justify-content-between">
                                         <a href="/locations/<%= placeName[0] %>/edit" class="btn btn-success">Edit <%= placeName[0] %></a>
                                         <form class="d-inline" action="/locations/<%= placeName[0] %>?_method=DELETE" method="POST">
