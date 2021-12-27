@@ -2,6 +2,17 @@ const Boulder = require('./models/boulder');
 const Location = require('./models/location');
 const mongoose = require('mongoose');
 
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/boulderBritain';
+
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+
 mongoose.connect('mongodb://localhost:27017/boulderBritain', { useNewUrlParser:true, useUnifiedTopology:true })
 .then(() => { console.log("MONGO CONNECTED!") })
 .catch(err => { console.log("ERROR OCCURRED!", err) })
