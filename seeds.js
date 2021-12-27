@@ -1141,16 +1141,16 @@ const randomNum = (min, max) => {
 //         const randGrade = grades[randomNum(0, grades.length)];
 //         const imageURL = [
 //             {
-//                 url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1638995168/BoulderBritain/ka2kkhdar7rjnd1x6m9w.jpg',
-//                 filename: 'BoulderBritain/ka2kkhdar7rjnd1x6m9w'
+//                 url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1639925883/BoulderBritain/tolfq246vyifncnnrebi.jpg',
+//                 filename: 'BoulderBritain/tolfq246vyifncnnrebi'
 //             },
 //             {
-//                 url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1638995168/BoulderBritain/i8hn1gxcorb5acclx25q.jpg',
-//                 filename: 'BoulderBritain/i8hn1gxcorb5acclx25q'
+//                 url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1639231343/BoulderBritain/byglckpjrexljbshy7ya.jpg',
+//                 filename: 'BoulderBritain/byglckpjrexljbshy7ya'
 //             }
 //         ]
 //         const descriptionText = 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio harum ea, magnam qui asperiores autem deleniti suscipit reprehenderit molestiae! Distinctio facere eaque debitis dolorum officia! Suscipit tenetur iure sapiente magni!'
-//         const initialUser = '61ac9fb14dcb3049e592e745' //change this ID to match an admin user
+//         const initialUser = '61c9e0b2dd5c0645409fb9e8' //change this ID to match an admin user
 //         const route = new routeObj(name, randGrade, imageURL, descriptionText, initialUser);
 //         routeList.push(route);
 // })
@@ -1176,8 +1176,8 @@ const randomNum = (min, max) => {
 //         const latitude = location.latitude;
 //         const longitude = location.longitude;
 //         const image = {
-//             url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/v1639001479/BoulderBritain/xal2ib3o48shdw8tgpy5.jpg',
-//             filename: 'BoulderBritain/xal2ib3o48shdw8tgpy5'
+//             url: 'https://res.cloudinary.com/dkxsdiu0c/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1639922527/BoulderBritain/jjfwfocltp1swemy0y0e.jpg',
+//             filename: 'BoulderBritain/jjfwfocltp1swemy0y0e'
 //         }
 //         const boulderLocation = new Location({area: area, place: place, geometry: { type: 'Point', coordinates: [longitude, latitude]}, image: image});
 //         const boulderSet = [];
